@@ -7,7 +7,7 @@
     <section class="users-list">
         <ul>
         {% for user in users %}
-            <li><a href="#">{{user.first_name}} {{user.last_name}}</a></li>    
+            <li><a href="/users/{{user.id}}">{{user.first_name}} {{user.last_name}}</a></li>
         {% endfor %}
         </ul>
     </section>

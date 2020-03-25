@@ -53,3 +53,10 @@ def user_submit():
     db.session.commit()
 
     return redirect("/")
+
+@app.route('/users/<user_id>')
+def user_detail(user_id):
+
+    current_user = User.query.get_or_404(int(user_id))
+
+    return render_template("user_detail.html", user=current_user)
