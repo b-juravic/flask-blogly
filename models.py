@@ -21,5 +21,5 @@ class User(db.Model):
                      nullable=False)
     last_name = db.Column(db.String(30),
                      nullable=False)
-    image_url = db.Column(db.String)
+    image_url = db.Column(db.String, default = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Joseph_Ducreux_%28French%29_-_Self-Portrait%2C_Yawning_-_Google_Art_Project.jpg/1024px-Joseph_Ducreux_%28French%29_-_Self-Portrait%2C_Yawning_-_Google_Art_Project.jpg")
     
