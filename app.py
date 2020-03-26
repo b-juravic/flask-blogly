@@ -45,7 +45,10 @@ def user_submit():
 
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
-    image_url = request.form["image_url"]
+    try:
+        image_url = request.form["image_url"]
+    except:
+        image_url=""
 
     if image_url == "":
         new_user = User(first_name=first_name,
@@ -66,7 +69,8 @@ def user_detail(user_id):
 
     current_user = User.query.get_or_404(user_id)
 
-    return render_template("user_detail.html", user=current_user)
+    return render_template("user_detail.html", 
+                            user=current_user)
 
 @app.route("/users/<int:user_id>/edit")
 def user_edit(user_id):
@@ -82,7 +86,10 @@ def edit_submit(user_id):
 
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
-    image_url = request.form["image_url"]
+    try:
+        image_url = request.form["image_url"]
+    except:
+        image_url=""
 
     user = User.query.get_or_404(user_id)
 
@@ -115,4 +122,56 @@ def new_post_form(user_id):
 
     return render_template('add_post_form.html', user=current_user)
 
-# @app.route("/users/<int:user_id>/")
+@app.route("/users/<int:user_id>/posts/new", methods=["POST"])
+def new_post_submit(user_id):
+    title = request.form["title"]
+    content = request.form["content"]
+
+    new_post = Post(title=title, content=content, user_id=user_id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
+
+@app.route("/posts/<int:post_id>")
+def post_details(post_id):
+    "Shows the post."
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template("post_details.html", post=post)
+
+@app.route("/posts/<int:post_id>/delete", methods=["POST"])
+def delete_post(post_id):
+    "Deletes a specific post from the database."
+
+    post = Post.query.get_or_404(post_id)
+
+    user_id = post.user.id
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
+
+@app.route("/posts/<int:post_id>/edit")
+def post_edit(post_id):    
+    "Shows the post editing form."
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template("edit_post_form.html", post=post)
+
+@app.route("/posts/<int:post_id>/edit", methods=["POST"])
+def post_edit_submit(post_id):
+    "Submits the changes to the post."
+
+    post = Post.query.get_or_404(post_id)
+
+    post.title = request.form["title"] # ask about this v. storing in variable
+    post.content = request.form["content"]
+
+    db.session.commit()
+
+    return redirect(f"/posts/{post_id}")
