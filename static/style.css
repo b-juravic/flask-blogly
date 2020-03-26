@@ -1,7 +1,35 @@
 * {
     box-sizing: border-box;
+    font-family: sans-serif;
 }
 
 img { 
+    max-width: 200px;
+}
+
+.users-list li {
+    background-color: coral;
+    padding: 5px;
+    margin: 4px 0px;
+    border-radius: 2px;
+    list-style-type: none;
+    max-width: 200px;
+      
+}
+
+.users-list a {
+    text-decoration: none;  
+    color: #fff;
+}
+
+.btn {
+    display: block;
+    border-radius: 2px;
+    background-color: skyblue;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 10px 0px;
     max-width: 200px;
 }
