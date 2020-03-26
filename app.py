@@ -2,7 +2,8 @@
 
 from flask import Flask, render_template, request, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
+from seed import setup_db
 
 app = Flask(__name__)
 
@@ -16,6 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
+
+# setup_db()
 
 @app.route("/")
 def home():
@@ -91,6 +94,7 @@ def edit_submit(user_id):
 
     return redirect("/users")
 
+
 @app.route("/users/<int:user_id>/delete", methods=["POST"])
 def delete_user(user_id):
     "Deletes a specific user from the database."
@@ -101,3 +105,14 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect("/users")
+
+
+@app.route("/users/<int:user_id>/posts/new")
+def new_post_form(user_id):
+    "Renders page that displays form to add a new post"
+
+    current_user = User.query.get_or_404(user_id)
+
+    return render_template('add_post_form.html', user=current_user)
+
+# @app.route("/users/<int:user_id>/")
